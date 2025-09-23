@@ -1,0 +1,87 @@
+{
+    "id": "BJ3TGDXPQWYAC",
+    "submitTime": "2025-09-11T23:53:51.294Z",
+    "startTime": "2025-09-11T23:53:51.453Z",
+    "endTime": "2025-09-12T00:03:59.918Z",
+    "progress": "FINISHED",
+    "status": "SUCCESS",
+    "buildContentId": "build-BJ3TGDXPQWYAC",
+    "temporaryBuild": false,
+    "alignmentPreference": null,
+    "scmUrl": "https://gitlab.cee.redhat.com/pnc-workspace/opendatahub-io/modelmesh.git",
+    "scmRevision": "14e884cd60f9832a0f3ea576b09e455062bee304",
+    "scmTag": "0.4.2.managedsvc-redhat-01914",
+    "buildOutputChecksum": null,
+    "lastUpdateTime": "2025-09-12T00:04:01.048Z",
+    "scmBuildConfigRevision": "e0196aef53821af7f134341ef6e215c844b10548",
+    "scmBuildConfigRevisionInternal": false,
+    "project": {
+        "id": "1248",
+        "name": "managed-open-data-hub",
+        "description": null,
+        "issueTrackerUrl": null,
+        "projectUrl": null,
+        "engineeringTeam": null,
+        "technicalLeader": null
+    },
+    "scmRepository": {
+        "id": "1224",
+        "internalUrl": "git@gitlab.cee.redhat.com:pnc-workspace/opendatahub-io/modelmesh.git",
+        "externalUrl": "https://github.com/opendatahub-io/modelmesh",
+        "preBuildSyncEnabled": true
+    },
+    "environment": {
+        "id": "1008",
+        "name": "OpenJDK 21.0; RHEL 9; Mvn 3.9.9; Nodejs 18; npm 10",
+        "description": "OpenJDK 21.0; RHEL 9; Mvn 3.9.9; Nodejs 18; npm 10 [builder-rhel-9-j21-mvn3.9.9-nodejs18-npm10:1.0.0]",
+        "systemImageRepositoryUrl": "quay.io/rh-newcastle",
+        "systemImageId": "builder-rhel-9-j21-mvn3.9.9-nodejs18-npm10:1.0.0",
+        "attributes": {
+            "JDK": "21.0",
+            "MAVEN": "3.9.9",
+            "OS": "Linux",
+            "NODEJS": "18",
+            "NPM": "10"
+        },
+        "systemImageType": "DOCKER_IMAGE",
+        "deprecated": false,
+        "hidden": false
+    },
+    "attributes": {
+        "BREW_BUILD_VERSION": "0.4.2.managedsvc-redhat-01914",
+        "BUILD_ARCHIVED": "true",
+        "BREW_BUILD_NAME": "com.ibm.watson:model-mesh"
+    },
+    "user": {
+        "id": "1293",
+        "username": "service-account-cpaas-pnc-prod-oidc-sa"
+    },
+    "buildConfigRevision": {
+        "id": "17586",
+        "rev": 2742483,
+        "name": "odh-modelmesh",
+        "buildScript": "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)\necho \"VERSION environment variable set to: ${VERSION}\"\n\nmvn -B package -DskipTests=true --file pom.xml\nzip -r modelmesh_artifacts.zip target/\nmvn deploy:deploy-file  -Durl=${AProxDeployUrl} -DrepositoryId=indy-mvn -Dfile=modelmesh_artifacts.zip -Dpackaging=zip -DgroupId=com.ibm.watson -DartifactId=model-mesh -Dversion=${VERSION}",
+        "scmRevision": "main",
+        "creationTime": "2025-02-07T09:04:11.792Z",
+        "modificationTime": "2025-03-25T10:23:50.044Z",
+        "buildType": "MVN",
+        "defaultAlignmentParams": "-DdependencySource=REST -DrepoRemovalBackup=repositories-backup.xml -DversionSuffixStrip= -DreportNonAligned=true -DstrictPropertyValidation=true",
+        "brewPullActive": false
+    },
+    "productMilestone": {
+        "id": "3421",
+        "version": "1.18.0.beta",
+        "endDate": null,
+        "startingDate": "2025-02-07T00:00:00Z",
+        "plannedEndDate": "2025-02-08T00:00:00Z"
+    },
+    "groupBuild": {
+        "id": "BJ3TGDXPQWYAE",
+        "startTime": "2025-09-11T23:53:51.443Z",
+        "endTime": "2025-09-12T00:04:01.172Z",
+        "status": "FAILED",
+        "temporaryBuild": false,
+        "alignmentPreference": null
+    },
+    "noRebuildCause": null
+}

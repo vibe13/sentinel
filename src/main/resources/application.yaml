@@ -1,0 +1,51 @@
+#
+# JBoss, Home of Professional Open Source.
+# Copyright ${copyright-years} Red Hat, Inc., and individual contributors
+# as indicated by the @author tags.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+provenance:
+  pnc:
+    buildType: "https://github.com/project-ncl/workflow/v1"
+    build_log:
+      endpoint: https://orch.pnc.engineering.redhat.com/pnc-rest/v2/builds/{id}/logs/build
+    alignment_log:
+      endpoint: https://orch.pnc.engineering.redhat.com/pnc-rest/v2/builds/{id}/logs/align
+
+    builder:
+      components:
+        version:
+          orch: 3.2.9
+          build_driver: "{build_driver_version}"
+          environment_driver: "{environment_driver_version}"
+          repository_driver: "{repository_driver_version}"
+          dingrogu: "{dingrogu_version}"
+          reqour: "{reqour_version}"
+          dependency_analysis: "{dependency_analysis_version}"
+          deliverables_analyzer: "{deliverables_analyzer_version}"
+          rex: "{rex_version}"
+          bifrost: "{bifrost_version}"
+          indy: "{indy_version}"
+
+  slsa:
+    spec:
+      version: "1.1"
+      specs:
+        "1.1":
+          _type: https://in-toto.io/Statement/v1
+          predicateType: https://slsa.dev/provenance/v1
+        "1.0":
+          _type: https://in-toto.io/Statement/v1
+          predicateType: https://slsa.dev/provenance/v1

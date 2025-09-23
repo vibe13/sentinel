@@ -1,0 +1,31 @@
+   [ {
+      "id": "1",
+      "identifier": "classworlds:classworlds:jar:1.1",
+      "purl": "pkg:maven/classworlds/classworlds@1.1?type=jar",
+      "artifactQuality": "IMPORTED",
+      "buildCategory": "STANDARD",
+      "md5": "c20629baa65f1f2948b37aa393b0310b",
+      "sha1": "60c708f55deeb7c5dfce8a7886ef09cbc1388eca",
+      "sha256": "4e3e0ad158ec60917e0de544c550f31cd65d5a97c3af1c1968bf427e4a9df2e4",
+      "filename": "classworlds-1.1.jar",
+      "deployPath": "/classworlds/classworlds/1.1/classworlds-1.1.jar",
+      "importDate": "2017-03-09T14:53:37.098Z",
+      "originUrl": "http://repo1.maven.org/maven2/classworlds/classworlds/1.1/classworlds-1.1.jar",
+      "size": 37854,
+      "deployUrl": "https://gateway.indy.corp.redhat.com/api/content/maven/hosted/shared-imports/classworlds/classworlds/1.1/classworlds-1.1.jar",
+      "publicUrl": "https://indy.corp.redhat.com/api/content/maven/hosted/shared-imports/classworlds/classworlds/1.1/classworlds-1.1.jar",
+      "creationTime": null,
+      "modificationTime": null,
+      "qualityLevelReason": null,
+      "targetRepository": {
+        "id": "5",
+        "temporaryRepo": false,
+        "identifier": "indy-maven",
+        "repositoryType": "MAVEN",
+        "repositoryPath": "/api/content/maven/hosted/shared-imports/"
+      },
+      "build": null,
+      "creationUser": null,
+      "modificationUser": null
+    }
+]    

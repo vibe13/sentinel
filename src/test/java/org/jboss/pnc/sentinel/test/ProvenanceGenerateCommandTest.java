@@ -106,7 +106,7 @@ class ProvenanceGenerateCommandTest {
     }
 
     @Test
-    void testSignBlobBytes() throws IOException, InterruptedException {
+    void testSignAndVerifyBlobBytes() throws IOException, InterruptedException {
         // Pre-generated provenance content
         String provenance = TestResources.asString("pnc/provenance/provenance.json");
 

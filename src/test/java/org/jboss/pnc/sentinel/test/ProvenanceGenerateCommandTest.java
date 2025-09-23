@@ -162,5 +162,8 @@ class ProvenanceGenerateCommandTest {
 
         System.out.println("✅ Decoded Rekor body:");
         System.out.println(ObjectMapperProvider.json().writerWithDefaultPrettyPrinter().writeValueAsString(bodyJson));
+
+        Files.deleteIfExists(Path.of("provenance.sig"));
+        Files.deleteIfExists(Path.of("provenance.intoto.jsonl"));
     }
 }

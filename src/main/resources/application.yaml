@@ -18,7 +18,7 @@
 
 provenance:
   pnc:
-    buildType: "https://github.com/project-ncl/workflow/v1"
+    buildType: "https://project-ncl.github.io/pnc-buildtypes/triggered-build/v1"
     build_log:
       endpoint: https://orch.com/pnc-rest/v2/builds/{id}/logs/build
     alignment_log:

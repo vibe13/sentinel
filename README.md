@@ -75,8 +75,8 @@ provenance:
       components:
         version:
           orch: 3.2.9
-          indy: "{indy_version}"
-          rex: "{rex_version}"
+          indy: 1.0.0
+          rex: 0.1.2
   slsa:
     spec:
       version: "1.1"

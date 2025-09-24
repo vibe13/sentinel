@@ -100,8 +100,8 @@ class ProvenanceGenerateCommandTest {
 
         String expectedProvenance = TestResources.asString("pnc/provenance/provenance.json");
         assertEquals(
-                expectedProvenance,
-                generatedProvenance,
+                expectedProvenance.trim(),
+                generatedProvenance.trim(),
                 "The generated provenance is different from the expected one");
     }
 

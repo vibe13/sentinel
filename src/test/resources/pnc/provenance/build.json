@@ -8,7 +8,7 @@
     "buildContentId": "build-BJ3TGDXPQWYAC",
     "temporaryBuild": false,
     "alignmentPreference": null,
-    "scmUrl": "https://gitlab.cee.redhat.com/pnc-workspace/opendatahub-io/modelmesh.git",
+    "scmUrl": "https://gitlab.com/pnc-workspace/opendatahub-io/modelmesh.git",
     "scmRevision": "14e884cd60f9832a0f3ea576b09e455062bee304",
     "scmTag": "0.4.2.managedsvc-redhat-01914",
     "buildOutputChecksum": null,

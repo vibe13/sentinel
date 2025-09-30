@@ -154,14 +154,38 @@ class ProvenanceGenerateCommandTest {
         assertTrue(ok2, "Bundle should verify with cosign");
 
         JsonNode root = ObjectMapperProvider.json().readTree(signedBlobResult.bundleJson());
-        String bodyBase64 = root.path("rekorBundle").path("Payload").path("body").asText();
 
-        // Decode the Rekor body
-        byte[] bodyBytes = Base64.getDecoder().decode(bodyBase64);
-        JsonNode bodyJson = ObjectMapperProvider.json().readTree(bodyBytes);
+        System.out.println("✅ Produced Bundle (intoto.jsonl):");
+        System.out.println(ObjectMapperProvider.json().writerWithDefaultPrettyPrinter().writeValueAsString(root));
 
-        System.out.println("✅ Decoded Rekor body:");
-        System.out.println(ObjectMapperProvider.json().writerWithDefaultPrettyPrinter().writeValueAsString(bodyJson));
+        // 🔐 1. Top-level signature
+        String base64Signature = root.path("base64Signature").asText();
+        System.out.println("--> Signature: " + base64Signature);
+
+        // 📜 2. Rekor bundle metadata
+        JsonNode rekorBundle = root.path("rekorBundle");
+        String signedEntryTimestamp = rekorBundle.path("SignedEntryTimestamp").asText();
+        System.out.println("--> Rekor SignedEntryTimestamp: " + signedEntryTimestamp);
+
+        // 🪵 3. Payload fields
+        JsonNode payload = rekorBundle.path("Payload");
+        String integratedTime = payload.path("integratedTime").asText();
+        String logIndex = payload.path("logIndex").asText();
+        String logID = payload.path("logID").asText();
+
+        System.out.println("--> Rekor Integrated Time: " + integratedTime);
+        System.out.println("--> Rekor Log Index: " + logIndex);
+        System.out.println("--> Rekor Log ID: " + logID);
+
+        // 📦 4. Decode the body (base64)
+        String bodyBase64 = payload.path("body").asText();
+        String decodedBody = new String(Base64.getDecoder().decode(bodyBase64));
+
+        // 📄 5. Parse the decoded body again (optional)
+        JsonNode body = ObjectMapperProvider.json().readTree(decodedBody);
+        System.out.println(
+                "--> Rekor Decoded Body: "
+                        + ObjectMapperProvider.json().writerWithDefaultPrettyPrinter().writeValueAsString(body));
 
         Files.deleteIfExists(Path.of("provenance.sig"));
         Files.deleteIfExists(Path.of("provenance.intoto.jsonl"));

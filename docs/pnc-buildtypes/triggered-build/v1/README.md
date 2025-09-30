@@ -155,7 +155,7 @@ The builder `id` MUST be set to `pnc`. It SHOULD contain a `version` object (map
 
 ### ByProducts
 
-The `byproducts` SHOULD contain entries which identify the logs of the alignment process and of the build process. Such entries SHOULD respectively be named `alignmentLog` and `buildLog` and provide the URIs from where the logs can be downleaded.
+The `byproducts` SHOULD contain entries which identify the logs of the alignment process and of the build process. Such entries SHOULD respectively be named `alignmentLog` and `buildLog` and provide the URIs from where the logs can be downloaded.
 
 ## Examples
 

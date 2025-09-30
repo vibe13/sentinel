@@ -30,7 +30,8 @@ public final class ProvenanceFields {
 
     // SCM
     public static final String SCM_REPOSITORY = "repository";
-    public static final String SCM_DOWNSTREAM_REPOSITORY = "downstreamRepository";
+    public static final String SCM_UPSTREAM_REPOSITORY = "repository.upstream";
+    public static final String SCM_DOWNSTREAM_REPOSITORY = "repository.downstream";
     public static final String SCM_COMMIT = "commit";
     public static final String SCM_TAG = "tag";
     public static final String REVISION = "revision";
@@ -46,7 +47,7 @@ public final class ProvenanceFields {
     public static final String BUILD_DETAILS_TEMPORARY = "temporary";
     public static final String BUILD_DETAILS_SCRIPT = "script";
     public static final String BUILD_DETAILS_NAME = "name";
-    public static final String BUILD_DETAILS_BREW_PULL_ACTIVE = "brewPullActive";
+    public static final String BUILD_DETAILS_BREW_PULL_ACTIVE = "BREW_PULL_ACTIVE";
     public static final String BUILD_DETAILS_PARAMETERS = "parameters";
     public static final String BUILD_DETAILS_DEFAULT_ALIGN_PARAMETERS = "defaultAlignmentParameters";
 

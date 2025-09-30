@@ -21,6 +21,7 @@ import static org.jboss.pnc.sentinel.provenance.utils.ProvenanceFields.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -148,7 +149,7 @@ public class ProvenanceUtils {
 
         deps.add(
                 ResourceDescriptor.builder()
-                        .name(SCM_REPOSITORY)
+                        .name(SCM_UPSTREAM_REPOSITORY)
                         .digest(Map.of(SCM_COMMIT, pncBuild.getScmBuildConfigRevision()))
                         .uri(pncBuild.getScmRepository().getExternalUrl())
                         .build());
@@ -161,12 +162,26 @@ public class ProvenanceUtils {
                         .annotations(Map.of(SCM_TAG, pncBuild.getScmTag()))
                         .build());
 
+        deps.add(
+                ResourceDescriptor.builder()
+                        .name(ENVIRONMENT)
+                        .uri(
+                                pncBuild.getEnvironment().getSystemImageRepositoryUrl() + "/"
+                                        + pncBuild.getEnvironment().getSystemImageId())
+                        .build());
+
         deps.addAll(createArtifactsResourceDescriptors(resolvedArtifacts));
         return deps;
     }
 
     private static Map<String, Object> createExternalParameters(Build pncBuild, BuildConfigurationRevision rev) {
-        var buildDetails = Map.of(
+
+        // Merge build parameters and include extra flags
+        Map<String, Object> mergedParameters = new HashMap<>(rev.getParameters());
+        mergedParameters.put(BUILD_DETAILS_BREW_PULL_ACTIVE, String.valueOf(rev.isBrewPullActive()));
+
+        // Build details map with all relevant metadata
+        Map<String, Object> buildDetails = Map.of(
                 BUILD_DETAILS_TYPE,
                 rev.getBuildType().toString(),
                 BUILD_DETAILS_TEMPORARY,
@@ -175,10 +190,8 @@ public class ProvenanceUtils {
                 rev.getBuildScript(),
                 BUILD_DETAILS_NAME,
                 rev.getName(),
-                BUILD_DETAILS_BREW_PULL_ACTIVE,
-                String.valueOf(rev.isBrewPullActive()),
                 BUILD_DETAILS_PARAMETERS,
-                rev.getParameters());
+                mergedParameters);
 
         return Map.of(
                 BUILD,
@@ -186,12 +199,7 @@ public class ProvenanceUtils {
                 SCM_REPOSITORY,
                 Map.of(URI, pncBuild.getScmRepository().getExternalUrl(), REVISION, rev.getScmRevision()),
                 ENVIRONMENT,
-                Map.of(
-                        URI,
-                        pncBuild.getEnvironment().getSystemImageRepositoryUrl() + "/"
-                                + pncBuild.getEnvironment().getSystemImageId(),
-                        NAME,
-                        pncBuild.getEnvironment().getName()));
+                Map.of(NAME, pncBuild.getEnvironment().getName()));
     }
 
     private static List<ResourceDescriptor> createByproducts(Build pncBuild, ProvenanceConfigProvider config) {

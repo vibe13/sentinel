@@ -30,11 +30,11 @@ public final class ProvenanceFields {
 
     // SCM
     public static final String SCM_REPOSITORY = "repository";
-    public static final String SCM_UPSTREAM_REPOSITORY = "repository.upstream";
     public static final String SCM_DOWNSTREAM_REPOSITORY = "repository.downstream";
     public static final String SCM_COMMIT = "commit";
     public static final String SCM_TAG = "tag";
     public static final String REVISION = "revision";
+    public static final String PRE_BUILD_SYNC = "preBuildSync";
 
     // Artifact keys
     public static final String ARTIFACT_IDENTIFIER = "identifier";

@@ -64,16 +64,16 @@ The `name` of a build environment, e.g. `OpenJDK 1.8; Mvn 3.6.0`. As this will p
 
 Mutually exclusive with `environment.id`. Exactly one of these fields MUST be set.
 
-<tr id="scm.url"><td><code>scm.url</code><td>string<td>
+<tr id="repository.url"><td><code>repository.url</code><td>string<td>
 
 The URL of the SCM to be checked out. This can be either internal (hosted on private SCM repositories within Red Hat or IBM) or external URL (public GitHub). The source code will be mirrored to an internal SCM repository.
 
-<tr id="scm.revision"><td><code>scm.revision</code><td>string<td>
+<tr id="repository.revision"><td><code>repository.revision</code><td>string<td>
 
-Git reference within `scm.url` that was checked out, as either
+Git reference within `repository.url` that was checked out, as either
 a git ref (e.g. `main`) or a commit SHA (lowercase hex).
 
-<tr id="scm.preBuildSyncEnabled"><td><code>scm.preBuildSyncEnabled</code><td>boolean<td>
+<tr id="repository.preBuildSync"><td><code>repository.preBuildSync</code><td>boolean<td>
 
 Flag to specify whether the synchronization from the external repository to the internal repository should happen before each build.
 
@@ -136,11 +136,25 @@ All internal parameters are OPTIONAL.
 
 ### Resolved dependencies
 
-The `resolvedDependencies` MUST contain entries identifying the resolved git commit ID corresponding to `scm.url` and `scm.revision` provided by the user (that MUST be mapped with an entry named `repository.upstream`), and the resolved git commit ID and URL corresponding to the internal (to Red Hat or IBM) SCM repository which hosts the code after the mirroring from `scm.url` and `scm.revision` and manipulated by the alignment process (this entry MUST be mapped with an entry named `repository.downstream` and SHOULD also contain an annotation with the commit TAG for easier auditability).
+The `resolvedDependencies` **MUST** include the following entries:
 
-The `resolvedDependencies` MUST contain an entry identifying the environment image used to execute the build (computed from the `environment.id` or `environment.name` provided by the user), and mapped by an `environment.uri` entry.
+#### 1. Source Repository Information
 
-The `resolvedDependencies` MUST also contain all the additional dependencies which were downloaded during the build process (build-time dependencies). These additional dependencies SHOULD contain annotations with the corresponding `identifier`, `purl`, `uri` computed by PNC.
+- An entry named `repository` that specifies the Git URL and resolved Git commit ID corresponding to the `repository.url` and `repository.revision` values provided by the user.
+- An entry named `repository.downstream` that specifies the resolved Git commit ID and URL of the internal SCM repository (within Red Hat or IBM) where the code is hosted after being mirrored from the original `repository.url` and `repository.revision`, and subsequently processed by the alignment workflow.  
+- The `repository.downstream` entry **SHOULD** also include an annotation with the commit tag to improve auditability.
+
+---
+
+#### 2. Build Environment Information
+
+- An entry named `environment.uri` that identifies the environment image used to execute the build. This value is derived from the `environment.id` or `environment.name` provided by the user.
+
+---
+
+#### 3. Build-Time Dependencies
+
+- Entries for all additional dependencies that were downloaded during the build process (i.e., build-time dependencies). These dependency entries **SHOULD** include annotations containing the corresponding `identifier`, `purl`, and `uri` values as computed by PNC.
 
 
 ## Run details

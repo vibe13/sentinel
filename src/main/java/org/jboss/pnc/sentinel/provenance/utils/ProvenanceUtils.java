@@ -149,7 +149,7 @@ public class ProvenanceUtils {
 
         deps.add(
                 ResourceDescriptor.builder()
-                        .name(SCM_UPSTREAM_REPOSITORY)
+                        .name(SCM_REPOSITORY)
                         .digest(Map.of(SCM_COMMIT, pncBuild.getScmBuildConfigRevision()))
                         .uri(pncBuild.getScmRepository().getExternalUrl())
                         .build());
@@ -197,7 +197,13 @@ public class ProvenanceUtils {
                 BUILD,
                 buildDetails,
                 SCM_REPOSITORY,
-                Map.of(URI, pncBuild.getScmRepository().getExternalUrl(), REVISION, rev.getScmRevision()),
+                Map.of(
+                        URI,
+                        pncBuild.getScmRepository().getExternalUrl(),
+                        REVISION,
+                        rev.getScmRevision(),
+                        PRE_BUILD_SYNC,
+                        String.valueOf(rev.getScmRepository().getPreBuildSyncEnabled())),
                 ENVIRONMENT,
                 Map.of(NAME, pncBuild.getEnvironment().getName()));
     }

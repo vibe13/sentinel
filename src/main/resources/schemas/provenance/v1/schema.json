@@ -1,0 +1,356 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-ncl.github.io/pnc-buildtypes/triggered-build/v1/provenance.schema.json",
+  "title": "PNC Triggered Build Provenance",
+  "description": "Schema for PNC provenance files compliant with SLSA Provenance v1.1",
+  "type": "object",
+  "required": [
+    "_type",
+    "predicateType",
+    "subject",
+    "predicate"
+  ],
+  "properties": {
+    "_type": {
+      "const": "https://in-toto.io/Statement/v1"
+    },
+    "predicateType": {
+      "const": "https://slsa.dev/provenance/v1"
+    },
+    "subject": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "digest"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "digest": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "annotations": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "required": [
+        "buildDefinition",
+        "runDetails"
+      ],
+      "properties": {
+        "buildDefinition": {
+          "type": "object",
+          "required": [
+            "buildType",
+            "externalParameters",
+            "resolvedDependencies"
+          ],
+          "properties": {
+            "buildType": {
+              "type": "string",
+              "format": "uri"
+            },
+            "externalParameters": {
+              "type": "object",
+              "required": [
+                "build",
+                "environment",
+                "repository"
+              ],
+              "properties": {
+                "build": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "type",
+                    "script",
+                    "temporary"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "script": {
+                      "type": "string"
+                    },
+                    "temporary": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "environment": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "anyOf": [
+                    {
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "id"
+                      ]
+                    }
+                  ]
+                },
+                "repository": {
+                  "type": "object",
+                  "required": [
+                    "uri",
+                    "revision",
+                    "preBuildSync"
+                  ],
+                  "properties": {
+                    "uri": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "preBuildSync": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "internalParameters": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "resolvedDependencies": {
+              "type": "array",
+              "minItems": 3,
+              "items": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  },
+                  "digest": {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "name": {
+                          "const": "environment"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "name",
+                        "uri"
+                      ],
+                      "properties": {
+                        "uri": {
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9._-]+(/[a-zA-Z0-9._-]+)+(:[a-zA-Z0-9._.-]+)?$"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "name": {
+                          "const": "repository"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "name",
+                        "uri",
+                        "digest"
+                      ]
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "name": {
+                          "const": "repository.downstream"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "name",
+                        "uri",
+                        "digest"
+                      ]
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "allOf": [
+                {
+                  "contains": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "uri",
+                      "digest"
+                    ],
+                    "properties": {
+                      "name": {
+                        "const": "repository"
+                      }
+                    }
+                  }
+                },
+                {
+                  "contains": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "uri",
+                      "digest"
+                    ],
+                    "properties": {
+                      "name": {
+                        "const": "repository.downstream"
+                      }
+                    }
+                  }
+                },
+                {
+                  "contains": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "uri"
+                    ],
+                    "properties": {
+                      "name": {
+                        "const": "environment"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "runDetails": {
+          "type": "object",
+          "required": [
+            "builder",
+            "metadata"
+          ],
+          "properties": {
+            "builder": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "const": "pnc"
+                },
+                "version": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "byproducts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "required": [
+                "invocationId",
+                "startedOn",
+                "finishedOn"
+              ],
+              "properties": {
+                "invocationId": {
+                  "type": "string"
+                },
+                "startedOn": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "finishedOn": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

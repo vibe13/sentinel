@@ -42,6 +42,8 @@ import org.jboss.pnc.sentinel.provenance.utils.ProvenanceUtils;
 import org.jboss.pnc.sentinel.test.ProvenanceGenerateCommandTest.CustomPncServiceProfile;
 import org.jboss.pnc.sentinel.test.utils.AlternativePncService;
 import org.jboss.pnc.sentinel.utils.ObjectMapperProvider;
+import org.jboss.pnc.sentinel.utils.SchemaValidator;
+import org.jboss.pnc.sentinel.utils.SchemaValidator.ValidationResult;
 import org.jboss.pnc.sentinel.utils.TestResources;
 import org.junit.jupiter.api.Test;
 
@@ -103,6 +105,10 @@ class ProvenanceGenerateCommandTest {
                 expectedProvenance.trim(),
                 generatedProvenance.trim(),
                 "The generated provenance is different from the expected one");
+
+        ValidationResult result = SchemaValidator.validate("v1", generatedProvenance);
+        assertTrue(result.isValid(), "Validation of provenance againt the schema did not pass");
+        assertTrue(result.getErrors().isEmpty(), "The errors from the schema validation is not empty");
     }
 
     @Test

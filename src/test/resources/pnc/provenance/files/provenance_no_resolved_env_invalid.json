@@ -1,0 +1,131 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "predicate": {
+    "buildDefinition": {
+      "buildType": "https://project-ncl.github.io/pnc-buildtypes/triggered-build/v1",
+      "externalParameters": {
+        "build": {
+          "name": "odh-modelmesh",
+          "parameters": {
+            "ALIGNMENT_PARAMETERS": "-DdependencyOverride.io.grpc:grpc-bom@*= -DdependencyOverride.com.google.protobuf:protobuf-java@*=",
+            "BREW_PULL_ACTIVE": "false",
+            "BUILD_CATEGORY": "SERVICE"
+          },
+          "script": "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)\necho \"VERSION environment variable set to: ${VERSION}\"\n\nmvn -B package -DskipTests=true --file pom.xml\nzip -r modelmesh_artifacts.zip target/\nmvn deploy:deploy-file  -Durl=${AProxDeployUrl} -DrepositoryId=indy-mvn -Dfile=modelmesh_artifacts.zip -Dpackaging=zip -DgroupId=com.ibm.watson -DartifactId=model-mesh -Dversion=${VERSION}",
+          "temporary": "false",
+          "type": "MVN"
+        },
+        "environment": {
+          "name": "OpenJDK 21.0; RHEL 9; Mvn 3.9.9; Nodejs 18; npm 10"
+        },
+        "repository": {
+          "preBuildSync": "true",
+          "revision": "main",
+          "uri": "https://github.com/opendatahub-io/modelmesh"
+        }
+      },
+      "internalParameters": {
+        "defaultAlignmentParameters": "-DdependencySource=REST -DrepoRemovalBackup=repositories-backup.xml -DversionSuffixStrip= -DreportNonAligned=true -DstrictPropertyValidation=true"
+      },
+      "resolvedDependencies": [
+        {
+          "digest": {
+            "commit": "e0196aef53821af7f134341ef6e215c844b10548"
+          },
+          "name": "repository",
+          "uri": "https://github.com/opendatahub-io/modelmesh"
+        },
+        {
+          "annotations": {
+            "tag": "0.4.2.managedsvc-redhat-01914"
+          },
+          "digest": {
+            "commit": "14e884cd60f9832a0f3ea576b09e455062bee304"
+          },
+          "name": "repository.downstream",
+          "uri": "https://gitlab.com/pnc-workspace/opendatahub-io/modelmesh.git"
+        },
+        {
+          "annotations": {
+            "identifier": "classworlds:classworlds:jar:1.1",
+            "purl": "pkg:maven/classworlds/classworlds@1.1?type=jar",
+            "uri": "https://indy.com/api/content/maven/hosted/shared-imports/classworlds/classworlds/1.1/classworlds-1.1.jar"
+          },
+          "digest": {
+            "sha256": "4e3e0ad158ec60917e0de544c550f31cd65d5a97c3af1c1968bf427e4a9df2e4"
+          },
+          "name": "classworlds-1.1.jar"
+        },
+        {
+          "annotations": {
+            "identifier": "org.codehaus.plexus:plexus:pom:3.3",
+            "purl": "pkg:maven/org.codehaus.plexus/plexus@3.3?type=pom",
+            "uri": "https://indy.com/api/content/maven/hosted/shared-imports/org/codehaus/plexus/plexus/3.3/plexus-3.3.pom"
+          },
+          "digest": {
+            "sha256": "3d2ad3a8bfd49d95952443afe2c14183136811019435bf16eed40796b2210ad2"
+          },
+          "name": "plexus-3.3.pom"
+        }
+      ]
+    },
+    "runDetails": {
+      "builder": {
+        "id": "pnc",
+        "version": {
+          "bifrost": "{bifrost_version}",
+          "build_driver": "{build_driver_version}",
+          "deliverables_analyzer": "{deliverables_analyzer_version}",
+          "dependency_analysis": "{dependency_analysis_version}",
+          "dingrogu": "{dingrogu_version}",
+          "environment_driver": "{environment_driver_version}",
+          "indy": "{indy_version}",
+          "orch": "3.2.9",
+          "repository_driver": "{repository_driver_version}",
+          "reqour": "{reqour_version}",
+          "rex": "{rex_version}"
+        }
+      },
+      "byproducts": [
+        {
+          "name": "buildLog",
+          "uri": "https://orch.com/pnc-rest/v2/builds/BJ3TGDXPQWYAC/logs/build"
+        },
+        {
+          "name": "alignmentLog",
+          "uri": "https://orch.com/pnc-rest/v2/builds/BJ3TGDXPQWYAC/logs/align"
+        }
+      ],
+      "metadata": {
+        "finishedOn": "2025-09-12T00:03:59.918Z",
+        "invocationId": "BJ3TGDXPQWYAC",
+        "startedOn": "2025-09-11T23:53:51.294Z"
+      }
+    }
+  },
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "subject": [
+    {
+      "annotations": {
+        "identifier": "com.ibm.watson:model-mesh:pom:0.4.2.managedsvc-redhat-01914",
+        "purl": "pkg:maven/com.ibm.watson/model-mesh@0.4.2.managedsvc-redhat-01914?type=pom",
+        "uri": "https://indy.com/api/content/maven/hosted/pnc-builds/com/ibm/watson/model-mesh/0.4.2.managedsvc-redhat-01914/model-mesh-0.4.2.managedsvc-redhat-01914.pom"
+      },
+      "digest": {
+        "sha256": "c6be0662b6c2b88e393b57ab9c50bbd939d0835b114a6e5e0624fbe0c1e1af85"
+      },
+      "name": "model-mesh-0.4.2.managedsvc-redhat-01914.pom"
+    },
+    {
+      "annotations": {
+        "identifier": "com.ibm.watson:model-mesh:zip:0.4.2.managedsvc-redhat-01914",
+        "purl": "pkg:maven/com.ibm.watson/model-mesh@0.4.2.managedsvc-redhat-01914?type=zip",
+        "uri": "https://indy.com/api/content/maven/hosted/pnc-builds/com/ibm/watson/model-mesh/0.4.2.managedsvc-redhat-01914/model-mesh-0.4.2.managedsvc-redhat-01914.zip"
+      },
+      "digest": {
+        "sha256": "ed0a7bcd75dda02f48980bf3dc792c4689426f77df9dab5e1525348f3558d844"
+      },
+      "name": "model-mesh-0.4.2.managedsvc-redhat-01914.zip"
+    }
+  ]
+}

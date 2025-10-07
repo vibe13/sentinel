@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -39,13 +40,14 @@ import org.jboss.pnc.sentinel.provenance.model.Provenance;
 import org.jboss.pnc.sentinel.provenance.utils.CosignWrapper;
 import org.jboss.pnc.sentinel.provenance.utils.CosignWrapper.SignedBlobResult;
 import org.jboss.pnc.sentinel.provenance.utils.ProvenanceUtils;
-import org.jboss.pnc.sentinel.test.ProvenanceGenerateCommandTest.CustomPncServiceProfile;
+import org.jboss.pnc.sentinel.test.ProvenanceGenerateTest.CustomPncServiceProfile;
 import org.jboss.pnc.sentinel.test.utils.AlternativePncService;
 import org.jboss.pnc.sentinel.utils.ObjectMapperProvider;
 import org.jboss.pnc.sentinel.utils.SchemaValidator;
 import org.jboss.pnc.sentinel.utils.SchemaValidator.ValidationResult;
 import org.jboss.pnc.sentinel.utils.TestResources;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -56,7 +58,7 @@ import jakarta.inject.Inject;
 
 @QuarkusTest
 @TestProfile(CustomPncServiceProfile.class)
-class ProvenanceGenerateCommandTest {
+class ProvenanceGenerateTest {
 
     private static final String PNC_BUILD_ID = "BJ3TGDXPQWYAC";
     private static final String PNC_BUILDCONFIG_ID = "17586";
@@ -195,5 +197,42 @@ class ProvenanceGenerateCommandTest {
 
         Files.deleteIfExists(Path.of("provenance.sig"));
         Files.deleteIfExists(Path.of("provenance.intoto.jsonl"));
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "pnc.api.host.url", matches = ".+")
+    @EnabledIfSystemProperty(named = "pnc.build.id", matches = ".+")
+    // Utility method to generate a real provenance file given a PNC Build.
+    // Usage: `mvn clean package -Dpnc.api.host.url="orch.pnc.XXX.com" -Dpnc.build.id="BKCOMJ3XUSAAA"`
+
+    void testCreateRealProvenance() throws IOException {
+        String pncHost = System.getProperty("pnc.api.host.url");
+        String pncBuildId = System.getProperty("pnc.build.id");
+        Objects.requireNonNull(pncHost);
+        Objects.requireNonNull(pncBuildId);
+
+        PncService pncService = new PncService(pncHost);
+        Build pncBuild = pncService.getBuild(pncBuildId);
+        BuildConfigurationRevision pncBuildConfigRevision = pncService.getBuildConfigRevision(
+                pncBuild.getBuildConfigRevision().getId(),
+                pncBuild.getBuildConfigRevision().getRev());
+        Collection<Artifact> builtArtifacts = pncService.getBuiltArtifacts(pncBuildId);
+        Collection<Artifact> resolvedArtifacts = pncService.getDependencies(pncBuildId);
+
+        Provenance provenance = ProvenanceUtils.createFullPNCBuildProvenance(
+                pncBuild,
+                pncBuildConfigRevision,
+                builtArtifacts,
+                resolvedArtifacts,
+                provenanceConfig);
+
+        String generatedProvenance = ObjectMapperProvider.json().writeValueAsString(provenance);
+        System.out.println("\n✅ Generated a provenance for PNC build '" + pncBuildId + "' -->");
+        System.out.println(generatedProvenance);
+        System.out.println("<--");
+
+        ValidationResult result = SchemaValidator.validate("v1", generatedProvenance);
+        assertTrue(result.isValid(), "Validation of provenance againt the schema did not pass");
+        assertTrue(result.getErrors().isEmpty(), "The errors from the schema validation is not empty");
     }
 }

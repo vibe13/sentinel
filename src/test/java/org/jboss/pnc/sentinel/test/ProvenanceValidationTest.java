@@ -42,6 +42,15 @@ class ProvenanceValidationTest {
     }
 
     @Test
+    void testValidProvenanceMissingResolvedRepository() throws IOException {
+        String provenance_valid = TestResources.asString("pnc/provenance/files/provenance_no_resolved_repo_valid.json");
+
+        ValidationResult result = SchemaValidator.validate("v1", provenance_valid);
+        assertTrue(result.isValid(), "Validation of provenance againt the schema should have passed");
+        assertTrue(result.getErrors().isEmpty(), "The errors from the schema validation should have been empty");
+    }
+
+    @Test
     void testInvalidProvenanceMissingSubjects() throws IOException {
         String provenance_no_subject_invalid = TestResources
                 .asString("pnc/provenance/files/provenance_no_subject_invalid.json");

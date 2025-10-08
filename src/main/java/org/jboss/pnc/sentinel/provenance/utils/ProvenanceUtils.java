@@ -147,12 +147,14 @@ public class ProvenanceUtils {
 
         var deps = new ArrayList<ResourceDescriptor>();
 
-        deps.add(
-                ResourceDescriptor.builder()
-                        .name(SCM_REPOSITORY)
-                        .digest(Map.of(SCM_COMMIT, pncBuild.getScmBuildConfigRevision()))
-                        .uri(pncBuild.getScmRepository().getExternalUrl())
-                        .build());
+        if (pncBuild.getScmBuildConfigRevision() != null) {
+            deps.add(
+                    ResourceDescriptor.builder()
+                            .name(SCM_REPOSITORY)
+                            .digest(Map.of(SCM_COMMIT, pncBuild.getScmBuildConfigRevision()))
+                            .uri(pncBuild.getScmRepository().getExternalUrl())
+                            .build());
+        }
 
         deps.add(
                 ResourceDescriptor.builder()

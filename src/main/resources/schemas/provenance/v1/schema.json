@@ -246,21 +246,6 @@
                     ],
                     "properties": {
                       "name": {
-                        "const": "repository"
-                      }
-                    }
-                  }
-                },
-                {
-                  "contains": {
-                    "type": "object",
-                    "required": [
-                      "name",
-                      "uri",
-                      "digest"
-                    ],
-                    "properties": {
-                      "name": {
                         "const": "repository.downstream"
                       }
                     }

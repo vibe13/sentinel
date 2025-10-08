@@ -138,24 +138,28 @@ All internal parameters are OPTIONAL.
 
 The `resolvedDependencies` **MUST** include the following entries:
 
-#### 1. Source Repository Information
+#### 1. Downstream Source Repository Information
 
-- An entry named `repository` that specifies the Git URL and resolved Git commit ID corresponding to the `repository.url` and `repository.revision` values provided by the user.
 - An entry named `repository.downstream` that specifies the resolved Git commit ID and URL of the internal SCM repository (within Red Hat or IBM) where the code is hosted after being mirrored from the original `repository.url` and `repository.revision`, and subsequently processed by the alignment workflow.  
 - The `repository.downstream` entry **SHOULD** also include an annotation with the commit tag to improve auditability.
-
----
 
 #### 2. Build Environment Information
 
 - An entry named `environment.uri` that identifies the environment image used to execute the build. This value is derived from the `environment.id` or `environment.name` provided by the user.
 
----
-
 #### 3. Build-Time Dependencies
 
 - Entries for all additional dependencies that were downloaded during the build process (i.e., build-time dependencies). These dependency entries **SHOULD** include annotations containing the corresponding `identifier`, `purl`, and `uri` values as computed by PNC.
 
+---
+
+The `resolvedDependencies` **SHOULD** include the following entries:
+
+#### 1. Upstream Source Repository Information
+
+- An entry named `repository` that specifies the Git URL and resolved Git commit ID corresponding to the `repository.url` and `repository.revision` values provided by the user.
+
+---
 
 ## Run details
 
